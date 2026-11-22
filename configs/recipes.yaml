@@ -1,0 +1,49 @@
+# Final locked-in recipes from the independent 4-stage nested-CV search
+# (Model -> Sampler -> Loss -> Hyperparameter), run separately for each target.
+# Selection at every stage used rank-consistency across AUC / F1 / Average-Precision,
+# not raw AUC alone (see README.md, "Methodology").
+
+ODD:
+  target_column: ODD_CP
+  model: RandomForest
+  n_estimators: 500
+  sampler: ADASYN          # train-only, minority matched 1:1 to majority
+  loss: Focal              # gamma=2.0, class-balanced alpha
+  focal_gamma: 2.0
+  hyperparameters:
+    criterion: gini
+    min_samples_leaf: 1
+    max_depth: null          # unrestricted
+    max_features: sqrt
+  final_outer_test_auc_combined: 0.871
+
+DICCD:
+  target_column: DICCD_CP
+  model: RandomForest
+  n_estimators: 500
+  sampler: None             # no resampling -- verified best by rank-consistency, not just raw AUC
+  loss: BCE                 # unweighted
+  focal_gamma: 2.0          # unused when loss=BCE; kept for schema symmetry
+  hyperparameters:
+    criterion: entropy
+    min_samples_leaf: 1
+    max_depth: 12
+    max_features: sqrt
+  final_outer_test_auc_combined: 0.866   # 0.871 under the wider Optuna search (see stage4_optuna_search.py)
+
+cv:
+  outer_folds: 5
+  outer_seed: 42
+  inner_folds: 5
+  inner_seed: 42
+
+feature_sets:
+  all:
+    label: Combined
+    groups: [other_features, adolescent_features, adult_features]
+  adolescent:
+    label: Adolescent
+    groups: [other_features, adolescent_features]
+  parent:
+    label: Parent
+    groups: [adult_features]

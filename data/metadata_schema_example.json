@@ -1,0 +1,21 @@
+{
+  "_comment": "Structural example only -- no participant data. Shows the group keys the pipeline reads; real metadata files are obtained with the dataset itself (see data/README.md).",
+  "other_features": ["dong"],
+  "adolescent_features": ["PHA1", "ST1_1", "ST1_4", "CV1_code", "CV2_code", "SAS1_total", "ksQ15_t", "ksQ16_t", "SV3_code"],
+  "adult_features": ["F4_M", "FA_M", "PHQ_total", "GAD_total", "F6"],
+  "feature_types": {
+    "PHA1": "ordinal",
+    "ST1_4": "ordinal",
+    "CV1_code": "binary",
+    "SAS1_total": "continuous",
+    "FA_M": "ordinal",
+    "PHQ_total": "continuous",
+    "GAD_total": "continuous"
+  },
+  "feature_groups": {
+    "binary": ["CV1_code", "CV2_code"],
+    "ordinal": ["PHA1", "ST1_1", "ST1_4", "FA_M"],
+    "nominal": [],
+    "continuous": ["SAS1_total", "PHQ_total", "GAD_total"]
+  }
+}

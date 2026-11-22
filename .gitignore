@@ -221,3 +221,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Participant data (IRB-restricted; never commit) -- see data/README.md
+data/*.csv
+data/*.xlsx
+data/*.json
+!data/metadata_schema_example.json
+*.pkl
+results/
+notebooks/.ipynb_checkpoints/
+catboost_info/
