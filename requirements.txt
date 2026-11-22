@@ -1,6 +1,7 @@
-numpy
-pandas
-scipy
+# Versions with which the published results were verified to reproduce (Python 3.10).
+numpy==2.2.6
+pandas==2.2.3
+scipy==1.15.3
 scikit-learn==1.7.2
 imbalanced-learn==0.14.1
 xgboost==3.2.0
@@ -8,7 +9,9 @@ catboost==1.2.10
 shap==0.51.0
 optuna==4.8.0
 statsmodels==0.14.6
+joblib==1.5.0
 matplotlib==3.10.7
-pyyaml
-openpyxl
+pyyaml>=6.0
+openpyxl>=3.1.0
+# notebook
 jupyter

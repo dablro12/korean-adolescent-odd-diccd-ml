@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the accompanying article."
+title: "korean-adolescent-odd-diccd-ml: machine-learning analysis of adolescent ODD and DICCD correlates"
+type: software
+license: Apache-2.0
+repository-code: "https://github.com/dablro12/korean-adolescent-odd-diccd-ml"
+version: 1.0.0
+authors:
+  - {family-names: Do, given-names: Ryemi, orcid: "https://orcid.org/0000-0003-3613-9955"}
+  - {family-names: Choe, given-names: Daehyeon, orcid: "https://orcid.org/0009-0004-2037-8761"}
+  - {family-names: Oh, given-names: Seungbin, orcid: "https://orcid.org/0000-0003-4350-229X"}
+  - {family-names: Kim, given-names: Soyeon, orcid: "https://orcid.org/0000-0002-9102-5814"}
+  - {family-names: Kong, given-names: Hyoun-Joong, orcid: "https://orcid.org/0000-0001-5456-4862"}
+  - {family-names: Sim, given-names: Hewoen, orcid: "https://orcid.org/0009-0005-4106-2157"}
+  - {family-names: Hwang, given-names: Sumin, orcid: "https://orcid.org/0009-0006-4778-7754"}
+  - {family-names: Park, given-names: Sohyun, orcid: "https://orcid.org/0000-0001-8974-7984"}
+  - {family-names: Lee, given-names: Chae Rim, orcid: "https://orcid.org/0009-0007-4353-9005"}
+  - {family-names: Kim, given-names: Bung-Nyun, orcid: "https://orcid.org/0000-0002-2403-3291"}
+keywords:
+  - oppositional defiant disorder
+  - disruptive behavior disorders
+  - adolescent mental health
+  - machine learning
+  - nested cross-validation
+  - SHAP
+  - KSADS-COMP
+preferred-citation:
+  type: article
+  title: "Adolescent-Level and Parent-Level Correlates of Oppositional Defiant Disorder in Korean Adolescents: A Machine Learning Analysis of National Survey Data"
+  status: submitted
+  authors:
+    - {family-names: Do, given-names: Ryemi}
+    - {family-names: Choe, given-names: Daehyeon}
+    - {family-names: Oh, given-names: Seungbin}
+    - {family-names: Kim, given-names: Soyeon}
+    - {family-names: Kong, given-names: Hyoun-Joong}
+    - {family-names: Sim, given-names: Hewoen}
+    - {family-names: Hwang, given-names: Sumin}
+    - {family-names: Park, given-names: Sohyun}
+    - {family-names: Lee, given-names: Chae Rim}
+    - {family-names: Kim, given-names: Bung-Nyun}

@@ -1,0 +1,104 @@
+# Experiment configuration used for the published ODD and DICCD analyses.
+# Changing any value below changes the results; keep the defaults to reproduce the paper.
+
+seed: 42
+
+paths:
+  data_dir: data          # where the (restricted) CSVs live -- see data/README.md
+  results_dir: results    # participant-level and summary outputs (git-ignored)
+  age_xlsx: adolescents_data.xlsx   # optional raw export providing 'age' for logistic adjustment
+
+cohorts:
+  odd:                    # primary outcome: current-or-past Oppositional Defiant Disorder (KSADS-COMP)
+    csv: adolescents_data_ODD_all.csv
+    target: ODD_CP
+    label: ODD
+  diccd:                  # overlapping secondary outcome: Disruptive, Impulse-Control, and Conduct Disorder
+    csv: adolescents_data_DICCD_all.csv
+    target: DICCD_CP
+    label: DICCD
+
+feature_sets: [combined, adolescent, parent]
+
+cv:
+  outer_folds: 5          # unbiased hold-out evaluation (StratifiedKFold, shuffle=True, seed=42)
+  inner_folds: 5          # candidate & Youden cut-off selection by inner out-of-fold predictions
+  outer_seed: 42
+  inner_seed: 42
+
+# Stage 1 candidate classifiers -> whether StandardScaler precedes the classifier.
+models:
+  Logistic Regression: true
+  Naive Bayes: true
+  Linear SVM: true
+  Random Forest: false
+  Gradient Boosting: false
+  HistGradientBoosting: false
+  XGBoost: false
+  CatBoost: false
+
+# Stage 2 candidate resamplers (applied to training partitions only; 1:1 minority-to-majority).
+samplers:
+  - None
+  - SMOTE
+  - ADASYN
+  - BorderlineSMOTE
+  - SVMSMOTE
+  - KMeansSMOTE
+  - SMOTEENN
+  - SMOTETomek
+
+# KMeansSMOTE requires forced cluster_balance_threshold=0.01 relaxation on ~113 minority cases;
+# reported in Stage 2 tables for transparency, excluded from stable candidate locking.
+unstable_cluster_samplers: [KMeansSMOTE]
+
+# Stage 3 candidate loss / sample-weighting schemes.
+losses: [BCE, Weighted BCE, Focal]
+focal_gamma: 2.0
+
+# Stage 4 hyperparameter grid (2 x 3 x 4 x 2 = 24 candidates) + wider Optuna TPE check.
+hparam_grid:
+  criterion: [gini, entropy]
+  min_samples_leaf: [1, 2, 5]
+  max_depth: [null, 8, 12, 16]
+  max_features: [sqrt, 0.3]
+
+optuna:
+  n_trials: 40
+
+# Final locked-in recipes determined independently per target by Inner-OOF rank-consistency
+# across AUC, F1, and Average Precision (never assumed identical across ODD and DICCD).
+locked_recipes:
+  odd:
+    model: Random Forest
+    n_estimators: 500
+    sampler: ADASYN
+    loss: Focal
+    focal_gamma: 2.0
+    hyperparameters:
+      criterion: gini
+      min_samples_leaf: 1
+      max_depth: null
+      max_features: sqrt
+    reported_combined_outer_auc: 0.871
+  diccd:
+    model: Random Forest
+    n_estimators: 500
+    sampler: None
+    loss: BCE
+    focal_gamma: null
+    hyperparameters:
+      criterion: entropy
+      min_samples_leaf: 1
+      max_depth: 12
+      max_features: sqrt
+    reported_combined_outer_auc: 0.871
+
+importance:
+  permutation_repeats: 8          # repeats per encoded feature per outer-test fold (seed=42)
+  permutation_seed: 42
+  top_k: 10
+
+robustness:
+  delong_bootstrap_b: 2000
+  perpetration_columns: [SV3_code, CV2_code]

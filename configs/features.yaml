@@ -1,0 +1,89 @@
+# Feature schema for the NMHSK-CA 2022 adolescent ODD and DICCD analyses (ADHD-excluded).
+#
+# The ORDER of every list below is significant: it fixes the column order of the
+# design matrix and of the ColumnTransformer output (63 encoded features in Combined:
+# 20 Adolescent + 43 Parent), which determines tree-model fits. Keep this order to
+# reproduce the published numbers bit-for-bit.
+
+sex_column: sex                  # 1 = male, 2 = female (covariate in logistic models only, never an ML predictor)
+excluded_columns: [KDBDRS_ADHD]  # parent-rated ADHD symptom score excluded by design
+
+# Variable groups (32 raw survey variables: 1 other + 16 adolescent + 15 parent)
+groups:
+  other: [dong]
+  adolescent: [PHA1, ST1_1, ST1_2, ST1_3, ST1_4, CS_code, SV2_code, SV3_code, CV1_code, CV2_code,
+               SAS1_total, IGD_P, ksQ15_t, ksQ16_t, ksQ22_t, ksQ24_t]
+  parent: [F3, F4_M, F4_F, F5M, F5F, F6, PS_code, PHQ_total, GAD_total,
+           FA_M, FA_F, FT_M, FT_F, mother_missing, father_missing]
+
+# Feature sets used in the paper -> groups they contain (in this order)
+feature_sets:
+  combined: [other, adolescent, parent]
+  adolescent: [other, adolescent]
+  parent: [parent]
+
+# Measurement type -> ColumnTransformer block (order inside each list is significant)
+types:
+  continuous: [SAS1_total, F6, PHQ_total, GAD_total]
+  binary: [CS_code, SV2_code, SV3_code, CV1_code, CV2_code, ksQ16_t, ksQ22_t, ksQ24_t,
+           PS_code, mother_missing, father_missing]
+  ordinal: [PHA1, ST1_1, ST1_2, ST1_3, ST1_4, ksQ15_t]
+  ordinal_parent: [F4_M, F4_F, FA_M, FA_F, FT_M, FT_F]
+  nominal: [dong, IGD_P, F3, F5M, F5F]
+
+# Publication labels and short descriptions
+labels:
+  dong:           {label: Residential Area, description: "Urban (dong) vs rural (eup/myeon) area of residence"}
+  PHA1:           {label: Physical Activity, description: "Days per week with >=60 min physical activity (1 = 0 days ... 5 = every day)"}
+  ST1_1:          {label: Video Screen Time, description: "Daily video screen time (1 = <1 h, 2 = 1-3 h, 3 = 3-5 h, 4 = 5-7 h, 5 = >=7 h)"}
+  ST1_2:          {label: Social Media Screen Time, description: "Daily social-media screen time (same 1-5 coding as ST1_1)"}
+  ST1_3:          {label: Gaming Screen Time, description: "Daily gaming screen time (same 1-5 coding as ST1_1)"}
+  ST1_4:          {label: Educational Screen Time, description: "Daily educational screen time (same 1-5 coding as ST1_1)"}
+  CS_code:        {label: Sleep Problem, description: "Adolescent sleep problem (onset >30 min, >=1 awakening/week, or <5 h / >10 h sleep)"}
+  SV2_code:       {label: Bullying Victimization, description: "School bullying victimization (yes/no)"}
+  SV3_code:       {label: Bullying Perpetration, description: "School bullying perpetration (yes/no)"}
+  CV1_code:       {label: Cyberbullying Victimization, description: "Cyberbullying victimization (yes/no)"}
+  CV2_code:       {label: Cyberbullying Perpetration, description: "Cyberbullying perpetration (yes/no)"}
+  SAS1_total:     {label: Smartphone Addiction, description: "Smartphone Addiction Scale (SAS-SV) total score"}
+  IGD_P:          {label: Game Addiction, description: "Internet gaming disorder, SCI-IGD (0 = no, 1 = high-risk, 9999 = unknown)"}
+  ksQ15_t:        {label: Academic Performance, description: "Self-reported academic standing, KSADS-COMP intro (1 = top ... 5 = bottom)"}
+  ksQ16_t:        {label: Academic Decline, description: "Recent decline in academic performance (yes/no)"}
+  ksQ22_t:        {label: Best Friend, description: "Presence of a best friend (yes/no)"}
+  ksQ24_t:        {label: Peer Group, description: "Presence of a regular peer group (yes/no)"}
+  F3:             {label: Marital Status, description: "Parental marital status"}
+  F4_M:           {label: Maternal Education, description: "Maternal education (1 = <=middle school, 2 = high school, 3 = college, 4 = graduate, 5 = unknown)"}
+  F4_F:           {label: Paternal Education, description: "Paternal education (ordinal, same coding as F4_M)"}
+  F5M:            {label: Maternal Occupation, description: "Maternal occupation (KSCO major group)"}
+  F5F:            {label: Paternal Occupation, description: "Paternal occupation (KSCO major group)"}
+  F6:             {label: Household Income, description: "Monthly household income (10,000 KRW units)"}
+  PS_code:        {label: Parental Sleep Problem, description: "Responding caregiver sleep problem (yes/no)"}
+  PHQ_total:      {label: Parental Depression, description: "Parental PHQ-9 total score"}
+  GAD_total:      {label: Parental Anxiety, description: "Parental GAD-7 total score"}
+  FA_M:           {label: Maternal Alcohol Use, description: "Maternal drinking frequency (1 = never, 2 = <=1/month, 3 = 2-4/month, 4 = 2-3/week, 5 = >=4/week)"}
+  FA_F:           {label: Paternal Alcohol Use, description: "Paternal drinking frequency (ordinal, same coding as FA_M)"}
+  FT_M:           {label: Maternal Smoking, description: "Maternal smoking intensity (1 = non-smoker, 2 = <=10, 3 = 11-20, 4 = 21-30, 5 = >=31 cigarettes/day)"}
+  FT_F:           {label: Paternal Smoking, description: "Paternal smoking intensity (ordinal, same coding as FT_M)"}
+  mother_missing: {label: Maternal Absence, description: "Maternal caregiver information absent in household (yes/no)"}
+  father_missing: {label: Paternal Absence, description: "Paternal caregiver information absent in household (yes/no)"}
+
+# English category labels for one-hot-encoded (nominal) variables
+categories:
+  dong:  {"1": "Urban", "2": "Rural"}
+  IGD_P: {"0": "No", "1": "High-risk", "9999": "Unknown/DK"}
+  F3:    {"2": Married (first), "3": Remarried, "4": Cohabiting, "5": Widowed, "6": Divorced, "7": Separated, "9999": Unknown/DK}
+  F5M:   &occupation
+    "1": Manager
+    "2": Manager/Professional
+    "3": Office Worker
+    "4": Service Worker
+    "5": Sales Worker
+    "6": Skilled Agricultural Worker
+    "7": Craft Worker
+    "8": Machine Operator
+    "9": Elementary Worker
+    "10": Military
+    "11": Homemaker
+    "12": Student
+    "9998": Other/None
+    "9999": Unknown/DK
+  F5F:   *occupation
