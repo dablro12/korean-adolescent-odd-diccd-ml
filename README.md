@@ -1,9 +1,10 @@
 # Korean Adolescent ODD/DICCD Classification (ADHD-Excluded Reanalysis)
 
-Nested cross-validated machine learning pipeline for classifying adolescent Oppositional
-Defiant Disorder (ODD) and Disruptive, Impulse-Control, and Conduct Disorder (DICCD), with
-the ADHD-symptom-score feature removed, plus downstream SHAP / permutation-importance /
-covariate-adjusted-association analysis.
+👋 **Welcome!** This repository holds the machine learning pipeline behind a study of
+adolescent Oppositional Defiant Disorder (ODD) and Disruptive, Impulse-Control, and Conduct
+Disorder (DICCD) in a Korean adolescent cohort. If you're a reviewer, a reader of the paper,
+or just curious how the analysis works, this README will walk you through it — no prior
+familiarity with the project assumed.
 
 📄 **Paper:** *Coming soon* — this repository accompanies a manuscript currently in
 preparation / under review. Title and venue to be determined.
@@ -12,18 +13,40 @@ preparation / under review. Title and venue to be determined.
 Hyoun-Joong Kong* · Bung-Nyun Kim*
 † Co-first authors. \* Co-corresponding authors.
 
-## Overview
+## What is this study about?
 
-This project analyzes a Korean adolescent survey cohort (ages 12–17) with linked
-parent-report items to predict ODD and DICCD. A prior analysis included an ADHD-symptom-score
-feature; this repository implements the **ADHD-excluded reanalysis** — running an
-independent 4-stage nested-CV comparison (Model → Sampler → Loss → Hyperparameter) for
-**each target separately**, rather than assuming one target's optimal recipe applies to
-the other. The two targets converged on genuinely different final recipes (see
-[Methodology](#methodology)) at similar performance (Combined-feature-set Outer-Test AUC
-~0.87 for both). With ADHD removed, **Smartphone Addiction** and **Cyberbullying
-Victimization** emerge as the top predictors for both ODD and DICCD across SHAP,
-permutation importance, and covariate-adjusted association analysis.
+We built a model that predicts ODD and DICCD from survey answers given by Korean
+adolescents (ages 12–17) and, separately, by their parents. An earlier analysis had
+included an ADHD-symptom score as one of the predictors — since ADHD symptoms are known to
+overlap heavily with both conditions, we re-ran the whole analysis **with that feature
+removed**, to see what rises to the top once it's no longer dominating the model.
+
+The short version of what we found: once ADHD is out of the picture, **smartphone
+addiction** and **cyberbullying victimization** become the strongest predictors of both ODD
+and DICCD — consistently across three independent lines of evidence (SHAP, permutation
+importance, and covariate-adjusted odds ratios).
+
+We also didn't assume ODD and DICCD needed the same recipe. Each target went through its
+own independent 4-stage search (Model → Sampler → Loss → Hyperparameter), and they landed on
+genuinely different best settings — see [Methodology](#methodology) below.
+
+## Quick start
+
+New here and just want to see it run? You don't need the real data for this part:
+
+```bash
+git clone https://github.com/dablro12/korean-adolescent-odd-diccd-ml.git
+cd korean-adolescent-odd-diccd-ml
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+jupyter notebook notebooks/example_walkthrough.ipynb
+```
+
+That notebook is fully self-contained — it builds a small synthetic dataset on the spot and
+runs the same preprocessing → resampling → fitting → thresholding → explainability steps
+used in the real pipeline, so you can see the mechanics work without needing data access.
+(The numbers in that notebook are synthetic, not the study's real findings — see
+[Methodology](#methodology) for the real results.)
 
 ## Repository structure
 
@@ -55,8 +78,7 @@ korean-adolescent-odd-diccd-ml/
 │       ├── figure_style.py
 │       └── exp15_publication_labels.py
 └── notebooks/
-    ├── example_walkthrough.ipynb    # standalone: reproduces real results from results_data/
-    └── results_data/                 # bundled aggregate summary CSVs (not participant data)
+    └── example_walkthrough.ipynb    # standalone demo on synthetic data (no data access needed)
 ```
 
 ## Installation
@@ -71,21 +93,20 @@ Developed and tested against Python 3.10, with `scikit-learn==1.7.2`,
 
 ## Data availability
 
-**No participant data is included in this repository.** The dataset is IRB-restricted
-human-subjects data. See [`data/README.md`](data/README.md) for the data-access process
-and the exact file layout / schema the code expects once data is obtained.
+**No participant data is included in this repository**, and none of the study's result
+numbers are bundled here either — both are intentionally kept out until the manuscript is
+further along. The dataset itself is IRB-restricted human-subjects data. See
+[`data/README.md`](data/README.md) for how to request access and the exact file layout /
+schema the code expects once data is obtained.
 
-To see the study's actual results without needing data access, run
-[`notebooks/example_walkthrough.ipynb`](notebooks/example_walkthrough.ipynb). It is **fully
-standalone** (no import from this repo's own `src/`) and reproduces the real final-performance,
-SHAP, permutation-importance, and correlation-matrix figures/tables directly from the small
-aggregate summary CSVs bundled in `notebooks/results_data/` — these are de-identified,
-already-derived summary statistics (the same numbers published in the paper's own tables and
-figures), not participant-level data.
+In the meantime, [`notebooks/example_walkthrough.ipynb`](notebooks/example_walkthrough.ipynb)
+lets you see every step of the pipeline run on a small synthetic dataset, so you can confirm
+the code works and follow the logic without needing data access.
 
 ## Usage
 
-Once data is placed per `data/README.md`:
+Once data is placed per `data/README.md`, you can run the pipeline stage by stage, or all at
+once:
 
 ```bash
 # Run one stage at a time
@@ -104,10 +125,21 @@ python src/run_pipeline.py --target ODD --data-dir data --output-dir results/odd
 python src/run_pipeline.py --target DICCD --data-dir data --output-dir results/diccd_nested
 ```
 
-`--target` selects which locked-in recipe (`configs/recipes.yaml`) is used; the same code
-path runs for both — there is no separate "ODD version" / "DICCD version" of any script.
+The `--target` flag is the only thing that changes between an ODD run and a DICCD run — it
+picks which locked-in recipe to read from `configs/recipes.yaml`. There's no separate "ODD
+version" / "DICCD version" of any script, by design (see the note on this in
+[Methodology](#methodology) — keeping one shared code path was a deliberate choice to avoid
+a class of bug we ran into with an earlier, duplicated-script version of this pipeline).
 
 ## Methodology
+
+If you're not familiar with nested cross-validation, here's the short version: we're
+comparing a lot of candidates (8 models, 8 resampling methods, 3 loss functions, dozens of
+hyperparameter settings), and if you let that comparison "peek" at the same data you later
+report performance on, your numbers end up optimistically biased. Nested CV avoids this by
+keeping two loops strictly separate — an **inner** loop that's allowed to look around and
+pick a winner, and an **outer** loop whose test fold is never touched until the winner is
+already locked in.
 
 **Nested cross-validation**: outer 5-fold × inner 5-fold `StratifiedKFold(shuffle=True,
 random_state=42)`. The inner loop is used only for candidate selection (which model /
@@ -119,10 +151,12 @@ partition only at every CV level — never on the held-out partition.
 **Selection discipline**: each stage locks in the previous stage's winner before moving to
 the next. Candidates are **not** selected by raw AUC alone — a rank-consistency score
 across AUC, F1, and Average Precision is computed, and the raw-AUC winner is overridden
-when it is materially worse on F1/AP (this mattered in practice: the AUC-best sampler for
-both targets ranked 6th–8th of 8 on F1/AP and was not used).
+when it is materially worse on F1/AP. This mattered in practice: the AUC-best resampling
+method for both targets ranked 6th–8th out of 8 candidates on F1/Average-Precision, and was
+not used in the end.
 
-**Final locked-in recipes** (independently determined per target):
+**Final locked-in recipes** (independently determined per target — ODD and DICCD were never
+assumed to need the same settings):
 
 | | ODD | DICCD |
 |---|---|---|
@@ -132,17 +166,24 @@ both targets ranked 6th–8th of 8 on F1/AP and was not used).
 | Hyperparameters | `criterion=gini, min_samples_leaf=1, max_depth=None, max_features=sqrt` | `criterion=entropy, min_samples_leaf=1, max_depth=12, max_features=sqrt` |
 | Final Outer-Test AUC (Combined feature set) | 0.871 | 0.866 (0.871 under a wider Optuna search) |
 
-A wider, partly-continuous Optuna (TPE) hyperparameter search (`stage4_optuna_search.py`)
-was run as a robustness check against the manual grid: for ODD it did not beat the grid
-(tied AUC, worse F1); for DICCD it found a marginal AUC gain (+0.005) with no single
-stable config winning across folds. Both results support that the manual grid was already
-close to optimal, rather than indicating either recipe should change.
+As a robustness check, we also ran a much wider, partly-continuous Optuna (TPE) search
+(`stage4_optuna_search.py`) against the manual grid above, to make sure we weren't missing a
+meaningfully better configuration: for ODD it did not beat the grid (tied AUC, worse F1);
+for DICCD it found a marginal AUC gain (+0.005) with no single stable config winning across
+folds. Both results point the same way — the manual grid was already close to optimal,
+rather than either recipe needing to change.
 
 **Downstream interpretation**: permutation importance (`scoring="roc_auc"`, `n_repeats=8`)
 and SHAP (`TreeExplainer`) are both computed on the held-out outer-test fold only, never on
 train, using each target's own locked-in recipe. Covariate-adjusted odds ratios (logistic
 regression, adjusted for sex, age, parental depression, parental anxiety) use
 Benjamini-Hochberg FDR correction applied once per target.
+
+## Questions or data requests?
+
+See [`data/README.md`](data/README.md) for the data access process. For anything else about
+this repository or the methodology, feel free to open a GitHub issue — we're happy to
+clarify.
 
 ## Citation
 

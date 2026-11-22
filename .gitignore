@@ -231,3 +231,4 @@ data/*.json
 results/
 notebooks/.ipynb_checkpoints/
 catboost_info/
+notebooks/results_data/
