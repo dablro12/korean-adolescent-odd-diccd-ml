@@ -1,0 +1,64 @@
+target,feature_set,feature,label,delta_auc
+ODD,Combined,continuous__SAS1_total,Smartphone Addiction,0.019631419780600727
+ODD,Combined,binary__CV1_code,Cyberbullying Victimization,0.01872164648490699
+ODD,Combined,ordinal__ST1_4,Educational Screen Time,0.010538592972290272
+ODD,Combined,binary__CV2_code,Cyberbullying Perpetration,0.009586521556100323
+ODD,Combined,continuous__GAD_total,Parental Anxiety,0.009225432112522577
+ODD,Combined,continuous__PHQ_total,Parental Depression,0.008894630785231384
+ODD,Combined,binary__ksQ16_t,Academic Decline,0.008492280167397146
+ODD,Combined,ordinal__ksQ15_t,Academic Performance,0.005712939231854957
+ODD,Combined,binary__SV3_code,Bullying Perpetration,0.004572468613030211
+ODD,Combined,nominal__IGD_P_0.0,Game Addiction (No),0.004014854641804688
+ODD,Combined,nominal__F3_2.0,Marital Status (Married-first),0.003777378476091375
+ODD,Combined,nominal__IGD_P_1.0,Game Addiction (High-risk),0.0036253497758957616
+ODD,Combined,binary__PS_code,Parental Sleep Problem,0.003501132902458923
+ODD,Combined,binary__SV2_code,Bullying Victimization,0.003181134388232637
+ODD,Combined,ordinal_parent__FA_M,Maternal Alcohol Use,0.0023224190872396465
+ODD,Combined,ordinal_parent__F4_M,Maternal Education,0.002214081420399644
+ODD,Combined,nominal__F3_4.0,Marital Status (Cohabiting),0.002129856622836318
+ODD,Combined,ordinal_parent__F4_F,Paternal Education,0.0020249393309065334
+ODD,Combined,nominal__dong_1.0,Residential Area (Urban),0.0016660630710942398
+ODD,Combined,ordinal__ST1_2,Social Media Screen Time,0.0014275654359507534
+ODD,Combined,ordinal__ST1_1,Video Screen Time,0.0012908897308272966
+ODD,Combined,nominal__F5F_7.0,Paternal Occupation (Craft Worker),0.001237912611742531
+ODD,Combined,nominal__F5M_3.0,Maternal Occupation (Office Worker),0.0011219758314141904
+ODD,Combined,binary__CS_code,Sleep Problem,0.0010358628630859235
+ODD,Combined,nominal__IGD_P_9999.0,Game Addiction (Unknown/DK),0.0009553679766238054
+ODD,Combined,nominal__F5M_11.0,Maternal Occupation (Homemaker),0.0008315999306638594
+ODD,Combined,nominal__F5F_9.0,Paternal Occupation (Elementary Worker),0.000691225268058332
+ODD,Combined,nominal__F5F_2.0,Paternal Occupation (Manager/Professional),0.0006634908253472849
+ODD,Combined,nominal__dong_2.0,Residential Area (Rural),0.0005912915088031739
+ODD,Combined,binary__ksQ22_t,Best Friend,0.0004281504593516866
+ODD,Combined,ordinal__PHA1,Physical Activity,0.00022278867345168208
+ODD,Combined,nominal__F3_6.0,Marital Status (Divorced),0.0002086273927147525
+ODD,Combined,nominal__F5M_5.0,Maternal Occupation (Sales Worker),0.0001928410469751729
+ODD,Combined,nominal__F5F_5.0,Paternal Occupation (Sales Worker),0.0001494440730009816
+ODD,Combined,ordinal_parent__FT_M,Maternal Smoking,0.00013627330807515216
+ODD,Combined,nominal__F3_9999.0,Marital Status (Unknown/DK),0.00012317992719708404
+ODD,Combined,nominal__F5M_9999.0,Maternal Occupation (Unknown/DK),9.642052348756702e-05
+ODD,Combined,nominal__F3_5.0,Marital Status (Widowed),6.634908253470018e-05
+ODD,Combined,nominal__F5M_2.0,Maternal Occupation (Manager/Professional),2.6496297947134485e-05
+ODD,Combined,nominal__F5F_10.0,Paternal Occupation (Military),2.10639377955818e-05
+ODD,Combined,binary__mother_missing,mother_missing,6.624074486769049e-06
+ODD,Combined,nominal__F5M_9998.0,Maternal Occupation (Other/None),3.900156006242384e-06
+ODD,Combined,nominal__F5F_9998.0,Paternal Occupation (Other/None),0.0
+ODD,Combined,nominal__F5M_1.0,Maternal Occupation (Manager),0.0
+ODD,Combined,nominal__F3_7.0,Marital Status (Separated),-1.8107867171796022e-06
+ODD,Combined,nominal__F5M_7.0,Maternal Occupation (Craft Worker),-4.054924101778989e-06
+ODD,Combined,nominal__F5F_9999.0,Paternal Occupation (Unknown/DK),-2.290567813193478e-05
+ODD,Combined,nominal__F3_3.0,Marital Status (Remarried),-5.0206770175592606e-05
+ODD,Combined,nominal__F5M_8.0,Maternal Occupation (Machine Operator),-6.295966124361118e-05
+ODD,Combined,nominal__F5F_6.0,Paternal Occupation (Skilled Agricultural Worker),-6.973850382588354e-05
+ODD,Combined,nominal__F5M_9.0,Maternal Occupation (Elementary Worker),-8.750588118767167e-05
+ODD,Combined,nominal__F5M_6.0,Maternal Occupation (Skilled Agricultural Worker),-9.80765421093377e-05
+ODD,Combined,binary__ksQ24_t,Peer Group,-0.00010388034569005223
+ODD,Combined,nominal__F5F_1.0,Paternal Occupation (Manager),-0.0002214576678305602
+ODD,Combined,ordinal__ST1_3,Gaming Screen Time,-0.0002810743382116565
+ODD,Combined,nominal__F5F_8.0,Paternal Occupation (Machine Operator),-0.0003049086249164612
+ODD,Combined,binary__father_missing,father_missing,-0.0004108319094668772
+ODD,Combined,nominal__F5F_4.0,Paternal Occupation (Service Worker),-0.0005808446623579516
+ODD,Combined,continuous__F6,Household Income,-0.0009325551593492604
+ODD,Combined,ordinal_parent__FT_F,Paternal Smoking,-0.0010678534284228962
+ODD,Combined,ordinal_parent__FA_F,Paternal Alcohol Use,-0.0013575173959339743
+ODD,Combined,nominal__F5M_4.0,Maternal Occupation (Service Worker),-0.0016523351410247162
+ODD,Combined,nominal__F5F_3.0,Paternal Occupation (Office Worker),-0.0018520788450585885

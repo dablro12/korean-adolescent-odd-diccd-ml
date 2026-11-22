@@ -6,7 +6,11 @@ the ADHD-symptom-score feature removed, plus downstream SHAP / permutation-impor
 covariate-adjusted-association analysis.
 
 📄 **Paper:** *Coming soon* — this repository accompanies a manuscript currently in
-preparation / under review. Citation details will be added on acceptance.
+preparation / under review. Title and venue to be determined.
+
+**Authors:** Daehyeon Choe† · Ryemi Do† · *(additional co-authors to be finalized)* ·
+Hyoun-Joong Kong* · Bung-Nyun Kim*
+† Co-first authors. \* Co-corresponding authors.
 
 ## Overview
 
@@ -51,7 +55,8 @@ korean-adolescent-odd-diccd-ml/
 │       ├── figure_style.py
 │       └── exp15_publication_labels.py
 └── notebooks/
-    └── example_walkthrough.ipynb    # end-to-end demo on synthetic data (no real data needed)
+    ├── example_walkthrough.ipynb    # standalone: reproduces real results from results_data/
+    └── results_data/                 # bundled aggregate summary CSVs (not participant data)
 ```
 
 ## Installation
@@ -70,9 +75,13 @@ Developed and tested against Python 3.10, with `scikit-learn==1.7.2`,
 human-subjects data. See [`data/README.md`](data/README.md) for the data-access process
 and the exact file layout / schema the code expects once data is obtained.
 
-To try the pipeline without real data, run [`notebooks/example_walkthrough.ipynb`](notebooks/example_walkthrough.ipynb),
-which generates a small synthetic dataset matching the real schema's shape and runs the
-pipeline on it end-to-end.
+To see the study's actual results without needing data access, run
+[`notebooks/example_walkthrough.ipynb`](notebooks/example_walkthrough.ipynb). It is **fully
+standalone** (no import from this repo's own `src/`) and reproduces the real final-performance,
+SHAP, permutation-importance, and correlation-matrix figures/tables directly from the small
+aggregate summary CSVs bundled in `notebooks/results_data/` — these are de-identified,
+already-derived summary statistics (the same numbers published in the paper's own tables and
+figures), not participant-level data.
 
 ## Usage
 
@@ -141,8 +150,9 @@ Citation details (BibTeX) will be added once the accompanying manuscript is acce
 
 ```bibtex
 @article{coming_soon_odd_diccd_korean_adolescent,
-  title   = {Coming soon},
-  author  = {Coming soon},
+  title   = {[Title to be determined]},
+  author  = {Choe, Daehyeon and Do, Ryemi and {(additional co-authors to be finalized)} and Kong, Hyoun-Joong and Kim, Bung-Nyun},
+  note    = {Daehyeon Choe and Ryemi Do contributed equally (co-first authors). Hyoun-Joong Kong and Bung-Nyun Kim are co-corresponding authors.},
   journal = {Coming soon},
   year    = {Coming soon}
 }
